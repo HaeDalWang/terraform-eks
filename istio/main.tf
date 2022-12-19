@@ -46,6 +46,7 @@ resource "helm_release" "istio-gateway" {
   depends_on      = [helm_release.istiod]
   cleanup_on_fail = true
   force_update    = false
+  ## ALB와 연결을 위해 nodeport로 지정
   set {
     name  = "service.type"
     value = "NodePort"
@@ -103,4 +104,12 @@ resource "kubernetes_ingress_v1" "istio-ingress" {
       }
     }
   }
+}
+
+# Istio용 PodMonitor & ServiceMonitor 매니페스트
+data "http" "monitoring_manifestfile" {
+  url = "https://raw.githubusercontent.com/istio/istio/master/samples/addons/extras/prometheus-operator.yaml"
+}
+resource "kubernetes_manifest" "monitoring_manifest" {
+  manifest = yamldecode(data.http.monitoring_manifestfile.body)
 }
