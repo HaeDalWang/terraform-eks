@@ -274,7 +274,7 @@ alertmanager:
     ## Hosts must be provided if Ingress is enabled.
     ##
     hosts:
-      - alertmanager.51bsd.click
+      - "alertmanager.51bsd.click"
 
     ## Paths to use for ingress rules - one path should match the alertmanagerSpec.routePrefix
     ##
@@ -781,7 +781,7 @@ grafana:
     # hosts:
     #   - grafana.domain.com
     hosts: 
-      - grafana.51bsd.click
+      - "grafana.51bsd.click"
 
     ## Path for grafana ingress
     path: /
@@ -1970,7 +1970,7 @@ prometheusOperator:
   thanosImage:
     registry: quay.io
     repository: thanos/thanos
-    tag: v0.28.1
+    tag: v0.29.0
     sha: ""
 
   ## Set a Field Selector to filter watched secrets
@@ -2252,7 +2252,7 @@ prometheus:
     # hosts:
     #   - prometheus.domain.com
     hosts: 
-      - prometheus.51bsd.click
+      - "prometheus.51bsd.click"
 
     ## Paths to use for ingress rules - one path should match the prometheusSpec.routePrefix
     ##
@@ -3258,7 +3258,7 @@ thanosRuler:
     image:
       registry: quay.io
       repository: thanos/thanos
-      tag: v0.28.1
+      tag: v0.29.0
       sha: ""
 
     ## Namespaces to be selected for PrometheusRules discovery.

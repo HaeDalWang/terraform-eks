@@ -1,9 +1,3 @@
-provider "helm" {
-  kubernetes {
-    config_path = "~/.kube/config"
-  }
-}
-
 locals {
   prometheus_charts_url = "https://prometheus-community.github.io/helm-charts"
 }
@@ -13,12 +7,16 @@ resource "helm_release" "prometheus-stack" {
   repository       = local.prometheus_charts_url
   chart            = "kube-prometheus-stack"
   name             = "monitoring"
-  namespace        = var.monitoring_namespace
-  version          = "42.3.0"
+  namespace        = var.namespace
+  version          = var.chart_version
   create_namespace = true
   cleanup_on_fail  = true
   force_update     = false
   values = [
-    "${file("values.yaml")}"
+    "${file("./modules/prometheus-stack/values.yaml")}",
   ]
+  set {
+    name = "grafana.adminPassword"
+    value = var.grafana_password
+  }
 }

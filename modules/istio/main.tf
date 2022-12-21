@@ -1,12 +1,3 @@
-provider "helm" {
-  kubernetes {
-    config_path = "~/.kube/config"
-  }
-}
-provider "kubernetes" {
-  config_path = "~/.kube/config"
-}
-
 locals {
   istio_charts_url = "https://istio-release.storage.googleapis.com/charts"
 }
@@ -16,8 +7,8 @@ resource "helm_release" "istio-base" {
   repository       = local.istio_charts_url
   chart            = "base"
   name             = "istio-base"
-  namespace        = var.istio-namespace
-  version          = "1.16.1"
+  namespace        = var.namespace
+  version          = var.istio_version
   create_namespace = true
   cleanup_on_fail  = true
   force_update     = false
@@ -28,9 +19,9 @@ resource "helm_release" "istiod" {
   repository       = local.istio_charts_url
   chart            = "istiod"
   name             = "istiod"
-  namespace        = var.istio-namespace
+  namespace        = var.namespace
   create_namespace = true
-  version          = "1.16.1"
+  version          = var.istio_version
   depends_on       = [helm_release.istio-base]
   cleanup_on_fail  = true
   force_update     = false
@@ -41,8 +32,8 @@ resource "helm_release" "istio-gateway" {
   repository      = local.istio_charts_url
   chart           = "gateway"
   name            = "istio-ingress"
-  namespace       = var.istio-namespace
-  version         = "1.16.1"
+  namespace       = var.namespace
+  version         = var.istio_version
   depends_on      = [helm_release.istiod]
   cleanup_on_fail = true
   force_update    = false
@@ -53,7 +44,7 @@ resource "helm_release" "istio-gateway" {
   }
   set {
     name  = "name"
-    value = var.istio-gateway-service
+    value = var.gateway-service
   }
 }
 
@@ -62,7 +53,7 @@ resource "kubernetes_ingress_v1" "istio-ingress" {
   depends_on = [helm_release.istio-gateway]
   metadata {
     name      = "istio-ingress-gateway"
-    namespace = var.istio-namespace
+    namespace = var.namespace
     annotations = {
       "alb.ingress.kubernetes.io/scheme"               = "internet-facing"
       "alb.ingress.kubernetes.io/target-type"          = "ip"
@@ -77,12 +68,12 @@ resource "kubernetes_ingress_v1" "istio-ingress" {
   spec {
     ingress_class_name = "alb"
     rule {
-      host = var.istio-host
+      host = var.gateway-host
       http {
         path {
           backend {
             service {
-              name = var.istio-gateway-service
+              name = var.gateway-service
               port {
                 number = 15021
               }
@@ -93,7 +84,7 @@ resource "kubernetes_ingress_v1" "istio-ingress" {
         path {
           backend {
             service {
-              name = var.istio-gateway-service
+              name = var.gateway-service
               port {
                 number = 80
               }
@@ -106,10 +97,10 @@ resource "kubernetes_ingress_v1" "istio-ingress" {
   }
 }
 
-# Istio용 PodMonitor & ServiceMonitor 매니페스트
-data "http" "monitoring_manifestfile" {
-  url = "https://raw.githubusercontent.com/istio/istio/master/samples/addons/extras/prometheus-operator.yaml"
-}
-resource "kubernetes_manifest" "monitoring_manifest" {
-  manifest = yamldecode(data.http.monitoring_manifestfile.body)
-}
+# # Istio용 PodMonitor & ServiceMonitor 매니페스트
+# data "http" "monitoring_manifestfile" {
+#   url = "https://raw.githubusercontent.com/istio/istio/master/samples/addons/extras/prometheus-operator.yaml"
+# }
+# resource "kubernetes_manifest" "monitoring_manifest" {
+#   manifest = yamldecode(data.http.monitoring_manifestfile.body)
+# }

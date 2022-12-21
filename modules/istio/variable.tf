@@ -1,19 +1,19 @@
 ## Istio install Namespace
-variable "istio-namespace" {
+variable "namespace" {
   description = "istio namespace"
   type        = string
   default     = "istio-system"
 }
 
 ## ALB istio DomainName 
-variable "istio-host" {
+variable "gateway-host" {
   description = "expose alb host"
   type        = string
-  default     = "istio.51bsd.click"
+  default     = "www.example.com"
 }
 
 ## istio gateway service resource Name
-variable "istio-gateway-service" {
+variable "gateway-service" {
   description = "istio-gateway service resource name"
   type        = string
   default     = "istio-ingress-gateway"

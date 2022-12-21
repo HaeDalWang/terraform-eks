@@ -1,0 +1,51 @@
+cr:
+  create: true
+  name: kiali
+  namespace: ""
+
+  spec:
+    external_services:
+      custom_dashboards:
+        prometheus:
+          url: ""
+      grafana:
+        auth:
+          insecure_skip_verify: false
+          password: ""
+          type: "basic"
+          username: "admin"
+        in_cluster_url: ""
+        url: ""
+      prometheus:
+        url: ""
+
+    server:
+      web_root: "/"  
+
+    deployment:
+      accessible_namespaces: ["**"]
+      view_only_mode: false
+      ingress:
+        enabled: true
+        class_name: alb
+        override_yaml:
+          metadata:
+            annotations:
+              alb.ingress.kubernetes.io/scheme: "internet-facing"
+              alb.ingress.kubernetes.io/target-type: "ip"
+              alb.ingress.kubernetes.io/listen-ports: "[{\"HTTP\": 80}, {\"HTTPS\": 443}]"
+              alb.ingress.kubernetes.io/backend-protocol: "HTTP"
+              alb.ingress.kubernetes.io/ssl-redirect: "443"
+              alb.ingress.kubernetes.io/group.name: "monitoring-alb-group"
+          spec:
+            rules:
+            - host: "kiali.example.com"
+              http:
+                paths:
+                - path: /
+                  pathType: Prefix
+                  backend:
+                    service:
+                      name: kiali
+                      port:
+                        number: 20001
