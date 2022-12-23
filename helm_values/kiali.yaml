@@ -10,7 +10,7 @@ cr:
           url: ""
       grafana:
         auth:
-          insecure_skip_verify: false
+          insecure_skip_verify: true
           password: ""
           type: "basic"
           username: "admin"
@@ -21,6 +21,8 @@ cr:
 
     server:
       web_root: "/"  
+    auth:
+      strategy: anonymous  
 
     deployment:
       accessible_namespaces: ["**"]

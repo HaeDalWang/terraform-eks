@@ -1,9 +1,3 @@
-# variable "prometheus_ns" {
-#   description = "monitoring ns"
-#   type        = string
-#   value       = module.prometheus-stack.namesapce
-# }
-
 variable "istio_ns" {
   description = "istio root ns"
   type        = string
@@ -32,10 +26,4 @@ variable "host" {
   description = "kiali domain host"
   type        = string
   default     = "kiali.example.com"
-}
-
-variable "namespace" {
-  description = "kiali operator ns"
-  type = string
-  default = "kiali-operator"
 }
