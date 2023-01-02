@@ -17,6 +17,7 @@ module "istio" {
   # gateway-host  = "istio.51bsd.click"
 }
 
+## Kiali는 Istio의 선행이 필요합니다
 module "kiali" {
   source = "./modules/kiali"
 
@@ -26,10 +27,8 @@ module "kiali" {
   grafana_url      = module.prometheus-stack.grafana_url
   grafana_password = module.prometheus-stack.grafana_password
   istio_ns         = module.istio.istio_namespace
-
   depends_on = [
-    module.prometheus-stack,
-    moduel.istio
+    module.istio
   ]
 }
 

@@ -36,5 +36,5 @@ provider "aws" {
   region = "ap-northeast-2"
 }
 provider "kubectl" {
-  config_paths = "~/.kube/config"
+  config_path = "~/.kube/config"
 }

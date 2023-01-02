@@ -1,20 +1,29 @@
+terraform {
+  required_providers {
+    kubectl = {
+      source = "gavinbunney/kubectl"
+      version = "1.14.0"
+    }
+  }
+}
+
 locals {
   istio_charts_url = "https://istio-release.storage.googleapis.com/charts"
 }
+
 resource "kubernetes_namespace" "istio" {
   metadata {
     name = var.namespace
   }
 }
 
-## CRD & namesapce 
+## CRD
 resource "helm_release" "istio-base" {
   repository       = local.istio_charts_url
   chart            = "base"
   name             = "istio-base"
   namespace        = kubernetes_namespace.istio.metadata[0].name
   version          = var.istio_version
-  create_namespace = true
   cleanup_on_fail  = true
   force_update     = false
 }
@@ -25,7 +34,6 @@ resource "helm_release" "istiod" {
   chart            = "istiod"
   name             = "istiod"
   namespace        = kubernetes_namespace.istio.metadata[0].name
-  create_namespace = true
   version          = var.istio_version
   depends_on       = [helm_release.istio-base]
   cleanup_on_fail  = true
