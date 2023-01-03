@@ -1,8 +1,11 @@
-## 1.60 버전 기준으로 작성되 었습니다
 external_services:
-  custom_dashboards:
-    prometheus:
-      url: ""
+  istio:
+    component_status:
+      components:
+      - app_label: istiod
+        is_core: true
+  prometheus:
+    url: ""
   grafana:
     auth:
       insecure_skip_verify: true
@@ -11,37 +14,25 @@ external_services:
       username: "admin"
     in_cluster_url: ""
     url: ""
-  prometheus:
-    url: ""
 
 auth:
   strategy: anonymous  
 server:
+  web_fqdn: ""
   web_root: "/"
 
 deployment:
+  accessible_namespaces:
+  - '**'
   ingress:
     enabled: true
     class_name: alb
     override_yaml:
       metadata:
         annotations:
-          # kubernetes.io/ingress.class: "alb"
           alb.ingress.kubernetes.io/scheme: "internet-facing"
           alb.ingress.kubernetes.io/target-type: "ip"
           alb.ingress.kubernetes.io/listen-ports: "[{\"HTTP\": 80}, {\"HTTPS\": 443}]"
           alb.ingress.kubernetes.io/backend-protocol: "HTTP"
           alb.ingress.kubernetes.io/ssl-redirect: "443"
           alb.ingress.kubernetes.io/group.name: "monitoring-alb-group"
-      spec:
-        rules:
-        - host: "kiali.example.com"
-          http:
-            paths:
-            - path: /
-              pathType: Prefix   
-              backend:
-                service:
-                  name: kiali
-                  port:
-                    number: 20001

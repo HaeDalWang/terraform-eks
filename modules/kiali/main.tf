@@ -34,7 +34,7 @@ resource "helm_release" "kiali" {
     value = var.prometheus_url
   }
   set {
-    name ="deployment.ingress.override_yaml.spec.rules[0].host"
+    name ="server.web_fqdn"
     value = var.host
   }
 }
