@@ -2240,6 +2240,19 @@ prometheus:
       alb.ingress.kubernetes.io/backend-protocol: "HTTP",
       alb.ingress.kubernetes.io/ssl-redirect: "443",
       alb.ingress.kubernetes.io/group.name: "monitoring-alb-group"
+      # ,
+      # alb.ingress.kubernetes.io/auth-type: oidc,
+      # alb.ingress.kubernetes.io/auth-scope: openid,
+      # alb.ingress.kubernetes.io/auth-session-timeout: '3600',
+      # alb.ingress.kubernetes.io/auth-session-cookie: custom,
+      # alb.ingress.kubernetes.io/auth-on-unauthenticated-request: authenticate,
+      # alb.ingress.kubernetes.io/auth-idp-oidc: '{
+      #                                         "issuer":"https://keycloak.51bsd.click/auth/realms/myrealm",
+      #                                         "authorizationEndpoint":"https://keycloak.51bsd.click/auth/realms/myrealm/protocol/openid-connect/auth",
+      #                                         "tokenEndpoint":"https://keycloak.51bsd.click/auth/realms/myrealm/protocol/openid-connect/token",
+      #                                         "userInfoEndpoint":"https://keycloak.51bsd.click/auth/realms/myrealm/protocol/openid-connect/userinfo",
+      #                                         "secretName":"oidc-client"
+      #                                         }'
     }
     labels: {}
 
@@ -2866,14 +2879,14 @@ prometheus:
 
     ## Containers allows injecting additional containers. This is meant to allow adding an authentication proxy to a Prometheus pod.
     ## if using proxy extraContainer update targetPort with proxy container port
-    containers: []
+    # containers: []
     # containers:
     # - name: oauth-proxy
     #   image: quay.io/oauth2-proxy/oauth2-proxy:v7.3.0
     #   args:
     #   - --upstream=http://127.0.0.1:9093
     #   - --http-address=0.0.0.0:8081
-    #   - ...
+
     #   ports:
     #   - containerPort: 8081
     #     name: oauth-proxy

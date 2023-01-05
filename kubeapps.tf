@@ -3,9 +3,12 @@
 module "prometheus-stack" {
   source = "./modules/prometheus-stack/"
 
-  namespace        = "monitoring"
-  chart_version    = "42.3.0"
-  grafana_password = "test123"
+  namespace         = "monitoring"
+  chart_version     = "42.3.0"
+  prometheus_host   = "prometheus.51bsd.click"
+  grafana_host      = "grafana.51bsd.click"
+  alertmanager_host = "alertmanager.51bsd.click"
+  grafana_password  = "test123"
 }
 
 module "istio" {
@@ -17,7 +20,6 @@ module "istio" {
   # gateway-host  = "istio.51bsd.click"
 }
 
-## Kiali는 Istio의 선행이 필요합니다
 module "kiali" {
   source = "./modules/kiali"
 

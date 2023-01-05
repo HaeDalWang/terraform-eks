@@ -6,17 +6,24 @@ external_services:
         is_core: true
   prometheus:
     url: ""
+  tracing:
+        enabled: false
+        use_grpc: false
+        in_cluster_url: ""
+        url: ""
   grafana:
+    enabled: true
     auth:
       insecure_skip_verify: true
       password: ""
       type: "basic"
       username: "admin"
     in_cluster_url: ""
+    health_check_url: ""
     url: ""
 
 auth:
-  strategy: anonymous  
+  strategy: anonymous
 server:
   web_fqdn: ""
   web_root: "/"

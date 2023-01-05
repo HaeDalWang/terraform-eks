@@ -9,8 +9,8 @@ output "prometheus_url" {
 }
 
 output "grafana_url" {
-  description = "incluster grafana URL"
-  value = "http://monitoring-grafana.${helm_release.prometheus-stack.namespace}.svc.cluster.local"
+  description = "grafana URL"
+  value = "https://${var.grafana_host}"
 }
 
 output "grafana_password" {

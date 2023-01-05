@@ -14,23 +14,19 @@ resource "helm_release" "kiali" {
     "${file("./helm_values/kiali-server.yaml")}",
   ]
   set {
-    name ="external_service.custom_dashboards.prometheus.url"
-    value = var.prometheus_url
-  }
-  set {
-    name ="external_service.grafana.url"
+    name ="external_services.grafana.url"
     value = var.grafana_url
   }
   set {
-    name ="external_service.grafana.in_cluster_url"
-    value = var.grafana_url
+    name ="external_services.grafana.health_check_url"
+    value = "${var.grafana_url}/api/health"
   }
   set {
-    name ="external_service.grafana.auth.password"
+    name ="external_services.grafana.auth.password"
     value = var.grafana_password
   }
   set {
-    name ="external_service.prometheus.url"
+    name ="external_services.prometheus.url"
     value = var.prometheus_url
   }
   set {
