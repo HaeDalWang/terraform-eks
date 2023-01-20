@@ -34,6 +34,7 @@ module "kiali" {
   ]
 }
 
+## 최종 확인 해야한다
 # module "argocd" {
 #   source = "./modules/argocd"
 
@@ -42,6 +43,7 @@ module "kiali" {
 #   argocd_password = "test123"
 # }
 
+## 작성 시작
 # ## AWS Opensearch + Fluent-bit
 # module "logging" {
 #   source = "./modules/opensearch_fluent-bit"

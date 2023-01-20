@@ -38,3 +38,10 @@ provider "aws" {
 provider "kubectl" {
   config_path = "~/.kube/config"
 }
+
+#### 기본 로컬 정보 #####
+locals {
+  name         = "eks-bsd"
+  cluster_name = coalesce(var.cluster_name, local.name)
+  region       = "ap-northeast-2"
+}
